@@ -7,6 +7,7 @@ int prompt(char **envp)
 	cmd = readline(PROMPT);
 	if (cmd == NULL)
 		return (1);
+	add_history(cmd);
 	to_exec(cmd, envp);
     return (0);
 }
