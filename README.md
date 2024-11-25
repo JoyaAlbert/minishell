@@ -1,3 +1,72 @@
+███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     
+████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     
+██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     
+██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     
+██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗
+╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
+
+## **1. Entrada y manejo básico**
+- Mostrar una línea de entrada mientras espera comandos.
+- Implementar un historial funcional de comandos.
+
+## **2. Ejecución de comandos**
+- Localizar y ejecutar el ejecutable correcto:
+  - Basado en la variable `PATH`.
+  - Usando rutas relativas o absolutas.
+
+## **3. Manejo de señales**
+- Usar **una sola variable global** exclusivamente para indicar la recepción de señales:
+  - La variable debe contener únicamente el número de la señal recibida.
+  - Evitar el acceso del gestor de señales a estructuras de datos principales.
+- Restringir el uso de estructuras de tipo "norm" como globales.
+
+## **4. Manejo de cadenas y metacaracteres**
+- No interpretar:
+  - Comillas sin cerrar.
+  - Caracteres especiales no especificados (como `\` o `;`).
+- Gestionar comillas:
+  - **`'`**: Evita que el shell interprete metacaracteres en su contenido.
+  - **`"`**: Evita interpretar metacaracteres excepto `$` (variable de entorno).
+
+## **5. Redirecciones**
+- Implementar:
+  - **`<`**: Redirigir entrada.
+  - **`>`**: Redirigir salida.
+  - **`<<`**: Recibir un delimitador y leer hasta encontrar una línea con solo el delimitador (sin actualizar historial).
+  - **`>>`**: Redirigir salida en modo "append".
+
+## **6. Pipes**
+- Implementar pipes (`|`):
+  - Conectar el output de un comando al input del siguiente en la pipeline.
+
+## **7. Variables y expansiones**
+- Gestionar variables de entorno (`$` seguidos de caracteres) y expandirlas a sus valores.
+- Expandir **`$?`** al estado de salida del último comando ejecutado en la pipeline.
+
+## **8. Manejo de combinaciones de teclas**
+- Comportamiento interactivo para:
+  - **`Ctrl-C`**: Imprimir una nueva línea de entrada.
+  - **`Ctrl-D`**: Terminar el shell.
+  - **`Ctrl-\`**: No realizar ninguna acción.
+
+## **9. Built-ins**
+- Implementar los siguientes comandos internos sin opciones adicionales:
+  - **`echo`**: Con la opción `-n`.
+  - **`cd`**: Solo con rutas relativas o absolutas.
+  - **`pwd`**: Mostrar el directorio actual.
+  - **`export`**: Gestionar variables de entorno.
+  - **`unset`**: Eliminar variables de entorno.
+  - **`env`**: Mostrar variables de entorno.
+  - **`exit`**: Terminar el shell.
+
+## **10. Comportamiento interactivo especial**
+- **Cuando sea interactivo:**
+  - **`Ctrl-C`**: Iniciar una nueva línea de entrada.
+  - **`Ctrl-D`**: Cerrar el shell.
+  - **`Ctrl-\`**: No realizar ninguna acción.
+
+
+
 | **Función**       | **Descripción Breve**                                                                                     |
 |--------------------|---------------------------------------------------------------------------------------------------------|
 | **readline**       | Lee una línea completa desde la entrada estándar con funcionalidades como historial y edición de línea. |
