@@ -5,6 +5,8 @@ SRC             =   minishell.c \
 					prompt.c\
 					exect.c\
 					parser.c\
+					signal_handler.c\
+					cd.c\
 					utils/lib_ft.c utils/lib_ft1.c utils/ft_split.c
 
 CC          =   gcc
