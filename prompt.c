@@ -9,5 +9,6 @@ int prompt(char **envp)
 		return (1);
 	add_history(cmd);
 	to_exec(cmd, envp);
+	free(cmd);
     return (0);
 }

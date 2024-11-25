@@ -9,14 +9,14 @@ void	execution(char *path, char **cmds, char **envp)
 	{
 		free(path);
         matrixfree(cmds);
-		msg("ERROR: no path found\n");
+		msg("ERROR: no path found");
 	}
 	check = execve(path, cmds, envp);
 	if (check == -1)
 	{
 		free(path);
         matrixfree(cmds);
-		msg("ERROR while executing\n");
+		msg("ERROR while executing");
 	}
 }
 void to_exec(char *cmd, char **envp)
