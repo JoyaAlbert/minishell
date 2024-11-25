@@ -7,6 +7,10 @@
 ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝             ╚═╝╚══════╝
 
 ```
+## LINKS Utiles
+- https://minishell.simple.ink/
+- https://www.linux.org/threads/bash-03-%E2%80%93-command-line-processing.38676/
+- https://www.gnu.org/software/bash/manual/bash.html
 ## **1. Entrada y manejo básico**
 - Mostrar una línea de entrada mientras espera comandos.
 - Implementar un historial funcional de comandos.
