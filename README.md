@@ -5,7 +5,7 @@
 ██║╚██╔╝██║██║██║╚██╗██║██║  
 ██║ ╚═╝ ██║██║██║ ╚████║██║  
 ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝ 
-``
+```
 ## **1. Entrada y manejo básico**
 - Mostrar una línea de entrada mientras espera comandos.
 - Implementar un historial funcional de comandos.
