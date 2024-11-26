@@ -40,19 +40,14 @@ int	check_redirect(char *cmd)
 
 void	sendto_builtin(char **cmds, t_dir_info *dir, char **envp)
 {
-	int	i;
-
-	i = -1;
 	(void)envp;
-	while (cmds[++i] != NULL)
-	{
-		if (!ft_strncmp(cmds[0], "pwd", 3) && ft_strlen(cmds[0]) == 3)
-			printf("%s\n", dir->dir);
-		if (!ft_strncmp(cmds[0], "env", 3) && ft_strlen(cmds[0]) == 3)
-			show_env(envp);
-		if (!ft_strncmp(cmds[0], "cd", 2) && ft_strlen(cmds[0]) == 2)
-			my_cd(cmds, envp, dir);
-	}
+
+	if (!ft_strncmp(cmds[0], "pwd", 3) && ft_strlen(cmds[0]) == 3)
+		printf("%s\n", dir->dir);
+	if (!ft_strncmp(cmds[0], "env", 3) && ft_strlen(cmds[0]) == 3)
+		show_env(envp);
+	if (!ft_strncmp(cmds[0], "cd", 2) && ft_strlen(cmds[0]) == 2)
+		my_cd(cmds, envp, dir);
 }
 
 void	parser(t_dir_info *dir, char **envp, char *cmd)

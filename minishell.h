@@ -17,7 +17,7 @@
 typedef struct dir_info
 {
 	char	**env_dup;
-	char	*dir;
+	char	dir[4026];
 	char	*prev_dir;
 }	t_dir_info;
 

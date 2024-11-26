@@ -15,7 +15,7 @@ char	**dupmatrix(char **og)
 		msg("Error allocating memory");
 	while(++i < count)
 	{
-		dest[i] = ft_strndup(og[i], ft_strlen(og[i]+1));  // Duplicate the string
+		dest[i] = ft_strndup(og[i], ft_strlen(og[i]) + 1);
         if (!dest[i]) 
 		{ 
             matrixfree(dest);
