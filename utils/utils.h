@@ -10,5 +10,6 @@ char			*ft_strjoin(char *s1, char *s2);
 char			**ft_split(char *s, char c);
 char			*ft_strchr(char *s, int c);
 unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size);
+char			*ft_strndup(char *s1, int n);
 
 #endif

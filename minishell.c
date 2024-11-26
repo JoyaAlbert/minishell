@@ -1,5 +1,31 @@
 #include "minishell.h"
 
+char	**dupmatrix(char **og)
+{
+	char	**dest;
+	int		count;
+	int		i;
+
+	count = -1;
+	i = -1;
+	while(og[++count] != NULL)
+		;
+	dest = malloc((count + 1) * sizeof(char *));
+	if (!dest)
+		msg("Error allocating memory");
+	while(++i < count)
+	{
+		dest[i] = ft_strndup(og[i], ft_strlen(og[i]+1));  // Duplicate the string
+        if (!dest[i]) 
+		{ 
+            matrixfree(dest);
+            msg("Error allocating memory");
+		}
+	}
+	dest[i] = NULL;
+	return (dest);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	(void)argv;
