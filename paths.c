@@ -13,7 +13,6 @@ void	matrixfree(char	**matrix)
 	free(matrix);
 }
 
-
 char	*getpatharray(char **envp)
 {
 	int	i;
