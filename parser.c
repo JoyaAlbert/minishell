@@ -47,7 +47,14 @@ void	sendto_builtin(char **cmds, t_dir_info *dir, char **envp)
 	if (!ft_strncmp(cmds[0], "env", 3) && ft_strlen(cmds[0]) == 3)
 		show_env(envp);
 	if (!ft_strncmp(cmds[0], "cd", 2) && ft_strlen(cmds[0]) == 2)
+	{
+		if (cmds[1] != NULL && cmds[2] != NULL)
+		{
+			printf("cd: too many arguments\n");
+			return (void)(0);
+		}
 		my_cd(cmds, envp, dir);
+	}
 }
 
 void	parser(t_dir_info *dir, char **envp, char *cmd)
