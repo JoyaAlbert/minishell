@@ -33,10 +33,12 @@ t_dir_info	*my_pwd(char **envp)
 	aux = malloc(sizeof(t_dir_info));
 	if (aux == NULL)
 		return (NULL);
-	aux->prev_dir = aux->dir;
+	aux->prev_dir = getenv("OLDPWD");
 	getcwd(aux->dir, sizeof(cwd));
 	return (aux);
 }
+
+
 
 void	my_cd(char **cmds, char **envp, t_dir_info *dir)
 {

@@ -1,12 +1,11 @@
 #include "minishell.h"
 
-void	update_env(char **envp, char **cmds)
+void	update_env(char **envp)
 {
     int i;
 	char cwd[4026];
 	char	*aux;
 
-	(void)cmds;
     i = -1;
     while (envp[++i] != NULL && ft_strnstr(envp[i], "PWD", 3) == NULL)
         ;
@@ -16,6 +15,7 @@ void	update_env(char **envp, char **cmds)
         aux = ft_strjoin("PWD=", cwd);
 		envp[i] = ft_strndup(aux, (ft_strlen(aux))+1);
     }
+	free(aux);
     i = -1;
     while (envp[++i] != NULL && ft_strnstr(envp[i], "OLDPWD", 6) == NULL)
         ;

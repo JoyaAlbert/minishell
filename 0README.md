@@ -12,13 +12,13 @@
 - https://www.linux.org/threads/bash-03-%E2%80%93-command-line-processing.38676/
 - https://www.gnu.org/software/bash/manual/bash.html
 ## **1. Entrada y manejo básico**
-- Mostrar una línea de entrada mientras espera comandos.
-- Implementar un historial funcional de comandos.
+- Mostrar una línea de entrada mientras espera comandos.✔️
+- Implementar un historial funcional de comandos.✔️
 
 ## **2. Ejecución de comandos**
 - Localizar y ejecutar el ejecutable correcto:
-  - Basado en la variable `PATH`.
-  - Usando rutas relativas o absolutas.
+  - Basado en la variable `PATH`. ✔️
+  - Usando rutas relativas o absolutas. ✔️
 
 ## **3. Manejo de señales**
 - Usar **una sola variable global** exclusivamente para indicar la recepción de señales:
@@ -51,25 +51,25 @@
 
 ## **8. Manejo de combinaciones de teclas**
 - Comportamiento interactivo para:
-  - **`Ctrl-C`**: Imprimir una nueva línea de entrada.
-  - **`Ctrl-D`**: Terminar el shell.
-  - **`Ctrl-\`**: No realizar ninguna acción.
+  - **`Ctrl-C`**: Imprimir una nueva línea de entrada. ✔️
+  - **`Ctrl-D`**: Terminar el shell. ✔️
+  - **`Ctrl-\`**: No realizar ninguna acción. ✔️
 
 ## **9. Built-ins**
 - Implementar los siguientes comandos internos sin opciones adicionales:
   - **`echo`**: Con la opción `-n`.
-  - **`cd`**: Solo con rutas relativas o absolutas.
-  - **`pwd`**: Mostrar el directorio actual.
+  - **`cd`**: Solo con rutas relativas o absolutas. ✔️?
+  - **`pwd`**: Mostrar el directorio actual. ✔️
   - **`export`**: Gestionar variables de entorno.
   - **`unset`**: Eliminar variables de entorno.
-  - **`env`**: Mostrar variables de entorno.
-  - **`exit`**: Terminar el shell.
+  - **`env`**: Mostrar variables de entorno. ✔️
+  - **`exit`**: Terminar el shell. ✔️
 
 ## **10. Comportamiento interactivo especial**
 - **Cuando sea interactivo:**
-  - **`Ctrl-C`**: Iniciar una nueva línea de entrada.
-  - **`Ctrl-D`**: Cerrar el shell.
-  - **`Ctrl-\`**: No realizar ninguna acción.
+  - **`Ctrl-C`**: Iniciar una nueva línea de entrada. ✔️
+  - **`Ctrl-D`**: Cerrar el shell. ✔️
+  - **`Ctrl-\`**: No realizar ninguna acción. ✔️
 
 
 
