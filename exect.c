@@ -27,6 +27,7 @@ void	to_exec(char *cmd, char **envp)
 
 	cmds = ft_split(cmd, ' ');
 	pid = fork();
+	path = ft_strndup(cmds[0], ft_strlen(cmds[0]) + 1);
 	if (pid == -1)
 	{
 		matrixfree(cmds);
@@ -36,15 +37,16 @@ void	to_exec(char *cmd, char **envp)
 	{
 		if (cmds[0][0] != '/' && cmds[0][0] != '.')
 		{
+			free(path);
 			path = getpath(cmds[0], envp);
 			execution(path, cmds, envp);
 			free(path);
-		}
+		}	
 		else
-			execution(cmds[0], cmds, envp);
+			execution(path, cmds, envp);
 	}
 	else
 		waitpid(0, NULL, 0);
-
+	free(path);
 	matrixfree(cmds);
 }
