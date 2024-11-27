@@ -12,7 +12,7 @@
 # include <signal.h>
 # include "utils/utils.h"
 
-# define PROMPT  "\033[3;36mShell<3\033[0m "
+# define PROMPT  "\033[3;36mShell➤\033[0m "
 
 typedef struct dir_info
 {

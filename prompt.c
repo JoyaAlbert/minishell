@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+int	exit_built(char *cmd, t_dir_info *dir_info)
+{
+	if (ft_strnstr(cmd, "exit", ft_strlen(cmd) + 1) != NULL)
+	{
+		free(cmd);
+		free(dir_info);
+		return (1);
+	}
+	free(cmd);
+	free(dir_info);
+	return (0);
+}
 int	prompt(char **envp)
 {
 	char		*cmd;
@@ -18,7 +30,5 @@ int	prompt(char **envp)
 	}
 	add_history(cmd);
 	parser(dir_info, envp, cmd);
-	free(cmd);
-	free(dir_info);
-	return (0);
+	return (exit_built(cmd, dir_info));
 }
