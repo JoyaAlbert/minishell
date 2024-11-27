@@ -53,8 +53,6 @@ void	my_cd(char **cmds, char **envp, t_dir_info *dir)
 			printf("HOME variable not set");
 		check = chdir(home);
 	}
-	else if (ft_strncmp(cmds[1], "-", 1) == 0)
-		check = chdir(dir->prev_dir);
 	else
 		check = chdir(cmds[1]);
 	dir_info = my_pwd(envp);
@@ -63,5 +61,6 @@ void	my_cd(char **cmds, char **envp, t_dir_info *dir)
 	else if (check < 0)
 		printf("cd: %s: not a path or directory\n", cmds[1]);
 	dir = dir_info;
+	(void)dir;
 	free(dir_info);
 }
