@@ -28,6 +28,8 @@ char	**dupmatrix(char **og)
 
 int	main(int argc, char **argv, char **envp)
 {
+	t_envp	*envp_d;
+
 	(void)argv;
 	if (argc != 1)
 		msg("\033[31mNO arguments accepted");
@@ -37,6 +39,10 @@ int	main(int argc, char **argv, char **envp)
 		msg("\033[31mNO Path variable on Envp");
 	if (lookinenv(envp, "PWD=/") == NULL)
 		msg("\033[31mNO PWD variable on Envp");
-	while (prompt(envp) == 0)
+	envp_d = malloc(sizeof(t_envp));
+	if (envp_d == NULL)
+		msg("Error allocating memory");
+	envp_d->env_dup = dupmatrix(envp);
+	while (prompt(envp_d) == 0)
 		;
 }

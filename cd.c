@@ -9,6 +9,35 @@ void	show_env(char **envp)
 		printf("%s\n", envp[i]);
 }
 
+void	update_env(char **envp, t_dir_info *dir)
+{
+    int i;
+	char cwd[4026];
+	char	*aux;
+
+    i = -1;
+    while (envp[++i] != NULL && ft_strnstr(envp[i], "PWD", 3) == NULL)
+        ;
+    if (envp[i] != NULL) 
+	{
+		free(envp[i]);
+        getcwd(cwd, sizeof(cwd));
+        aux = ft_strjoin("PWD=", cwd);
+		envp[i] = ft_strndup(aux, (ft_strlen(aux))+1);
+    }
+	free(aux);
+    i = -1;
+    while (envp[++i] != NULL && ft_strnstr(envp[i], "OLDPWD", 6) == NULL)
+        ;
+    if (envp[i] != NULL) 
+    {
+		free(envp[i]);
+		aux = ft_strjoin("OLDPWD=", dir->dir); 
+		envp[i] = ft_strndup(aux, (ft_strlen(aux))+1);
+		free(aux);
+    }
+}
+
 char	*lookinenv(char **envp, char *lookfor)
 {
 	int	i;
@@ -38,8 +67,6 @@ t_dir_info	*my_pwd(char **envp)
 	return (aux);
 }
 
-
-
 void	my_cd(char **cmds, char **envp, t_dir_info *dir)
 {
 	char		*home;
@@ -57,9 +84,12 @@ void	my_cd(char **cmds, char **envp, t_dir_info *dir)
 	}
 	else
 		check = chdir(cmds[1]);
-	dir_info = my_pwd(envp);
 	if (check == 0)
+	{
+		update_env(envp, dir);
+		dir_info = my_pwd(envp);
 		printf("%s\n", dir_info->dir);
+	}
 	else if (check < 0)
 		printf("cd: %s: not a path or directory\n", cmds[1]);
 	dir = dir_info;

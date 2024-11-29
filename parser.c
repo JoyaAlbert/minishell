@@ -55,6 +55,8 @@ void	sendto_builtin(char **cmds, t_dir_info *dir, char **envp)
 		}
 		my_cd(cmds, envp, dir);
 	}
+	if (!ft_strncmp(cmds[0], "unset", 5) && ft_strlen(cmds[0]) == 5)
+	{}
 }
 
 void	parser(t_dir_info *dir, char **envp, char *cmd)

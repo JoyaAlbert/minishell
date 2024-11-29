@@ -16,10 +16,14 @@
 
 typedef struct dir_info
 {
-	char	**env_dup;
 	char	dir[4026];
 	char	*prev_dir;
 }	t_dir_info;
+
+typedef struct env
+{
+	char	**env_dup;
+}	t_envp;
 
 // BUILT IN //
 void		show_env(char **envp);
@@ -40,7 +44,7 @@ void		matrixfree(char	**matrix);
 void		to_exec(char *cmd, char **envp);
 
 // PROMPT //
-int			prompt(char **envp);
+int	prompt(t_envp *envp_d);
 
 // SIGNALS //
 void		signal_handler(void);
