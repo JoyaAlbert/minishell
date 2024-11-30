@@ -43,6 +43,7 @@ int	main(int argc, char **argv, char **envp)
 	if (envp_d == NULL)
 		msg("Error allocating memory");
 	envp_d->env_dup = dupmatrix(envp);
+	to_exec("clear", envp);
 	while (prompt(envp_d) == 0)
 		;
 }

@@ -1,5 +1,5 @@
 #include "minishell.h"
- »
+
 void	update_env(char **envp)
 {
     int i;
