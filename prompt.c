@@ -14,6 +14,19 @@ int	exit_built(char *cmd, t_dir_info *dir_info, t_envp *envp_d)
 	free(dir_info);
 	return (0);
 }
+
+int check_spaces(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while(cmd[i] == ' ' || cmd[i] == '\t')
+		i++;
+	if (cmd[i] == '\0')
+		return (1);
+	return (0);
+}
+
 int	prompt(t_envp *envp_d)
 {
 	char		*cmd;
@@ -24,7 +37,7 @@ int	prompt(t_envp *envp_d)
 	cmd = readline(PROMPT);
 	if (cmd == NULL)
 		return (1);
-	if (ft_strlen(cmd) == 0)
+	if (ft_strlen(cmd) == 0 || check_spaces(cmd) == 1)
 	{
 		free(dir_info);
 		free(cmd);
