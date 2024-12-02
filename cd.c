@@ -1,70 +1,31 @@
 #include "minishell.h"
 
-void	show_env(char **envp)
+void aux_mycd(char **cmds, t_dir_info *dir, t_dir_info *dir_info, int check)
 {
-	int	i;
-
-	i = -1;
-	while (envp[++i] != NULL)
-		printf("%s\n", envp[i]);
+	if (check < 0 && ft_strncmp(cmds[1], "-", 1) != 0)
+		printf("cd: %s: not a path or directory\n", cmds[1]);
+	dir = dir_info;
+	(void)dir;
+	free(dir_info);
 }
 
-void	update_env(char **envp, t_dir_info *dir)
+int my_prevcd(char **cmds, char **envp, t_dir_info *dir)
 {
-    int i;
-	char cwd[4026];
-	char	*aux;
+	int			check;
+	char		*env;
 
-    i = -1;
-    while (envp[++i] != NULL && ft_strnstr(envp[i], "PWD", 3) == NULL)
-        ;
-    if (envp[i] != NULL) 
+	(void)dir;
+	check = 1;
+	if (cmds[1] == NULL)
+		return (check);
+	if (ft_strncmp(cmds[1], "-", 1) == 0 && ft_strlen(cmds[1]) == 1)
 	{
-		free(envp[i]);
-        getcwd(cwd, sizeof(cwd));
-        aux = ft_strjoin("PWD=", cwd);
-		envp[i] = ft_strndup(aux, (ft_strlen(aux))+1);
-    }
-	free(aux);
-    i = -1;
-    while (envp[++i] != NULL && ft_strnstr(envp[i], "OLDPWD", 6) == NULL)
-        ;
-    if (envp[i] != NULL) 
-    {
-		free(envp[i]);
-		aux = ft_strjoin("OLDPWD=", dir->dir); 
-		envp[i] = ft_strndup(aux, (ft_strlen(aux))+1);
-		free(aux);
-    }
-}
-
-char	*lookinenv(char **envp, char *lookfor)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i] != 0)
-	{
-		if (ft_strnstr(envp[i], lookfor, ft_strlen(lookfor)) != NULL)
-			return (ft_strnstr(envp[i], lookfor, ft_strlen(lookfor))
-				+ ft_strlen(lookfor));
-		i++;
+		env = lookinenv(envp, "OLDPWD=");
+		if (env == NULL)
+			printf("cd: OLDPWD not set\n");
+		check = chdir(env);
 	}
-	return (NULL);
-}
-
-t_dir_info	*my_pwd(char **envp)
-{
-	char cwd[4026];
-	t_dir_info	*aux;
-	
-	(void)envp;
-	aux = malloc(sizeof(t_dir_info));
-	if (aux == NULL)
-		return (NULL);
-	aux->prev_dir = getenv("OLDPWD");
-	getcwd(aux->dir, sizeof(cwd));
-	return (aux);
+	return (check);
 }
 
 void	my_cd(char **cmds, char **envp, t_dir_info *dir)
@@ -74,6 +35,7 @@ void	my_cd(char **cmds, char **envp, t_dir_info *dir)
 	int			check;
 
 	check = 1;
+	check = my_prevcd(cmds, envp, dir);
 	if (cmds[1] == NULL
 		|| (ft_strncmp(cmds[1], "~", 1) == 0 && ft_strlen(cmds[1]) == 1))
 	{
@@ -82,7 +44,7 @@ void	my_cd(char **cmds, char **envp, t_dir_info *dir)
 			printf("HOME variable not set");
 		check = chdir(home);
 	}
-	else
+	else if (cmds[1] != NULL && ft_strncmp(cmds[1], "-", 1) != 0)
 		check = chdir(cmds[1]);
 	if (check == 0)
 	{
@@ -90,9 +52,5 @@ void	my_cd(char **cmds, char **envp, t_dir_info *dir)
 		dir_info = my_pwd(envp);
 		printf("%s\n", dir_info->dir);
 	}
-	else if (check < 0)
-		printf("cd: %s: not a path or directory\n", cmds[1]);
-	dir = dir_info;
-	(void)dir;
-	free(dir_info);
+	aux_mycd(cmds, dir, dir_info, check);
 }

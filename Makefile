@@ -7,6 +7,8 @@ SRC             =   minishell.c \
 					parser.c\
 					signal_handler.c\
 					cd.c\
+					env_pwd.c\
+					pipelinig.c\
 					unset.c\
 					utils/lib_ft.c utils/lib_ft1.c utils/ft_split.c
 

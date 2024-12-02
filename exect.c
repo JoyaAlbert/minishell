@@ -46,7 +46,7 @@ void	to_exec(char *cmd, char **envp)
 			execution(path, cmds, envp);
 	}
 	else
-		waitpid(0, NULL, 0);
+		waitpid(pid, NULL, 0);
 	free(path);
 	matrixfree(cmds);
 }

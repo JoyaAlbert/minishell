@@ -4,6 +4,8 @@ char	*ft_strndup(char *s1, int n)
 {
 	char	*s2;
 
+	while (*s1 == ' ')
+		s1++;
 	s2 = (char *)malloc(sizeof(char) * n);
 	if (s2 == NULL)
 		return (NULL);

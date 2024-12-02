@@ -68,8 +68,7 @@ void	parser(t_dir_info *dir, char **envp, char *cmd)
 		to_exec(cmd, envp);
 	cmds = ft_split(cmd, ' ');
 	if (check_redirect(cmd) == 0)
-	{//con redirrecion para cada comando en la redireccion necesario averiguar si es un built in
-	}
+		pipeline(cmd, envp);
 	if (check_builtins(cmd) == 0)
 		sendto_builtin(cmds, dir, envp);
 	matrixfree(cmds);
