@@ -28,12 +28,21 @@ int	check_builtins(char *cmd)
 int	check_redirect(char *cmd)
 {
 	int	i;
+	int	count;
 
+	count = 0;
 	i = -1;
 	while (cmd[++i] != '\0')
 	{
 		if (cmd[i] == '|' || cmd[i] == '<' || cmd[i] == '>')
-			return (0);
+			count++;
+	}
+	if (count == 1)
+		return (0);
+	else if (count > 1)
+	{
+		printf("|| not allowed\n");
+		return (-1);
 	}
 	return (1);
 }
@@ -64,12 +73,14 @@ void	parser(t_dir_info *dir, char **envp, char *cmd)
 	char	**cmds;
 
 	///SI CAMBIAMOS A USAR TODAS LAS VRIABLES CON UN DUP CAMBIAR BUILT INS QUE USEN ENV CON DIR_>ENV
+	if (check_redirect(cmd) == -1)
+		return ;
 	if (check_builtins(cmd) == 1 && check_redirect(cmd) == 1)
 		to_exec(cmd, envp);
 	cmds = ft_split(cmd, ' ');
 	if (check_redirect(cmd) == 0)
 		pipeline(cmd, envp);
-	if (check_builtins(cmd) == 0)
+	else if (check_builtins(cmd) == 0 && check_redirect(cmd) == 1)
 		sendto_builtin(cmds, dir, envp);
 	matrixfree(cmds);
 }
