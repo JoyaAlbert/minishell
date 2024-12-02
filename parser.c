@@ -30,14 +30,19 @@ int	check_redirect(char *cmd)
 	int	i;
 	int	count;
 
-	count = 0;
 	i = -1;
 	while (cmd[++i] != '\0')
 	{
+		count = 0;
 		if (cmd[i] == '|' || cmd[i] == '<' || cmd[i] == '>')
-			count++;
+		{
+			while (cmd[i++] == '|')
+				count++;
+			if (count > 1)
+				break;
+		}
 	}
-	if (count == 1)
+	if (count == 0)
 		return (0);
 	else if (count > 1)
 	{
@@ -79,7 +84,7 @@ void	parser(t_dir_info *dir, char **envp, char *cmd)
 		to_exec(cmd, envp);
 	cmds = ft_split(cmd, ' ');
 	if (check_redirect(cmd) == 0)
-		pipeline(cmd, envp);
+		pipeline(cmd, envp, dir);
 	else if (check_builtins(cmd) == 0 && check_redirect(cmd) == 1)
 		sendto_builtin(cmds, dir, envp);
 	matrixfree(cmds);

@@ -1,12 +1,21 @@
 #include "minishell.h"
 
-
-void to_execpipe(char *cmd, char **envp) 
+void	builtin_pipes(char *cmd, char **args, char **envp, t_dir_info *dir)
+{
+	if (check_builtins(cmd) == 0)
+	{
+		sendto_builtin(args, dir, envp);
+		matrixfree(args);
+		exit(0);
+	}
+}
+void to_execpipe(char *cmd, char **envp, t_dir_info *dir) 
 {
     char **args;
 	char *path;
 	
-	args = ft_split(cmd, ' '); 
+	args = ft_split(cmd, ' ');
+	builtin_pipes(cmd, args, envp, dir); 
 	if (cmd[0] != '/' && cmd[0] != '.')
 		path = getpath(args[0], envp);
 	else
@@ -25,7 +34,6 @@ void to_execpipe(char *cmd, char **envp)
     }
 }
 
-
 void update_cmd(char **cmds)
 {
 	int i;
@@ -41,16 +49,7 @@ void update_cmd(char **cmds)
     }
 }
 
-void	fork_fail(char **cmds, int pid)
-{
-	if (pid < 0)
-	{
-		matrixfree(cmds);
-		msg("Fork Failed");
-	}
-}
-
-void	pipeaux(char **cmds, char **envp)
+void	pipeaux(char **cmds, char **envp, t_dir_info *dir)
 {
 	pid_t pid;
 	int	i;
@@ -66,7 +65,7 @@ void	pipeaux(char **cmds, char **envp)
 		{
 			dup2(pd[1], 1);
 			close(pd[0]);
-			to_execpipe(cmds[i], envp);
+			to_execpipe(cmds[i], envp, dir);
         } 
 		else
 		{
@@ -75,11 +74,11 @@ void	pipeaux(char **cmds, char **envp)
 		}
 		waitpid(0, NULL, 0);
     }
-	to_execpipe(cmds[i], envp);
+	to_execpipe(cmds[i], envp, dir);
 	waitpid(pid, NULL, 0);
 }
 
-void pipeline(char *cmd, char **envp) 
+void pipeline(char *cmd, char **envp, t_dir_info *dir) 
 {
     char **cmds;
 	pid_t pid1;
@@ -90,7 +89,7 @@ void pipeline(char *cmd, char **envp)
 	fork_fail(cmds, pid1);
     if (pid1 == 0) 
     {
-    	pipeaux(cmds, envp);
+    	pipeaux(cmds, envp, dir);
     	matrixfree(cmds);
 	}
 	else

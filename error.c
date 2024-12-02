@@ -10,3 +10,12 @@ void	msg(char *str)
 	write(1, "\n", 1);
 	exit(1);
 }
+
+void	fork_fail(char **cmds, int pid)
+{
+	if (pid < 0)
+	{
+		matrixfree(cmds);
+		msg("Fork Failed");
+	}
+}

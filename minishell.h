@@ -32,13 +32,16 @@ typedef struct env
 void		my_cd(char **cmds, char **envp, t_dir_info *dir);
 
 // PIPES //
-void	pipeline(char *cmd, char **envp);
+void 		pipeline(char *cmd, char **envp, t_dir_info *dir); 
 
-// SHOW ERROR ON SCREEN//
+// ERROR //
 void		msg(char *str);
+void	fork_fail(char **cmds, int pid);
 
 //	PARSER   //
 void		parser(t_dir_info *dir, char **envp, char *cmd);
+void		sendto_builtin(char **cmds, t_dir_info *dir, char **envp);
+int			check_builtins(char *cmd);
 
 // PATHS //
 char		*getpatharray(char **envp);
