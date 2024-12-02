@@ -41,6 +41,15 @@ void update_cmd(char **cmds)
     }
 }
 
+void	fork_fail(char **cmds, int pid)
+{
+	if (pid < 0)
+	{
+		matrixfree(cmds);
+		msg("Fork Failed");
+	}
+}
+
 void	pipeaux(char **cmds, char **envp)
 {
 	pid_t pid;
@@ -52,6 +61,7 @@ void	pipeaux(char **cmds, char **envp)
 	{
         pipe(pd);
 		pid = fork();
+		fork_fail(cmds, pid);
 		if (pid == 0)
 		{
 			dup2(pd[1], 1);
@@ -77,6 +87,7 @@ void pipeline(char *cmd, char **envp)
     cmds = ft_split(cmd, '|');
     update_cmd(cmds);
 	pid1 = fork();
+	fork_fail(cmds, pid1);
     if (pid1 == 0) 
     {
     	pipeaux(cmds, envp);
