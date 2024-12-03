@@ -8,18 +8,18 @@ char	**dupmatrix(char **og)
 
 	count = -1;
 	i = -1;
-	while(og[++count] != NULL)
+	while (og[++count] != NULL)
 		;
 	dest = malloc((count + 1) * sizeof(char *));
 	if (!dest)
 		msg("Error allocating memory");
-	while(++i < count)
+	while (++i < count)
 	{
 		dest[i] = ft_strndup(og[i], ft_strlen(og[i]) + 1);
-        if (!dest[i]) 
-		{ 
-            matrixfree(dest);
-            msg("Error allocating memory");
+		if (!dest[i])
+		{
+			matrixfree(dest);
+			msg("Error allocating memory");
 		}
 	}
 	dest[i] = NULL;
@@ -43,6 +43,7 @@ int	main(int argc, char **argv, char **envp)
 	if (envp_d == NULL)
 		msg("Error allocating memory");
 	envp_d->env_dup = dupmatrix(envp);
+	update_shlvl(envp_d->env_dup);
 	to_exec("clear", envp);
 	while (prompt(envp_d) == 0)
 		;

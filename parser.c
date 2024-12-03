@@ -3,23 +3,19 @@
 int	check_builtins(char *cmd)
 {
 	char	**cmds;
-	int		i;
 
-	i = -1;
 	cmds = ft_split(cmd, ' ');
-	while (cmds[++i] != NULL)
+
+	if ((!ft_strncmp(cmds[0], "cd", 2) && ft_strlen(cmds[0]) == 2)
+		|| (!ft_strncmp(cmds[0], "pwd", 3) && ft_strlen(cmds[0]) == 3)
+		|| (!ft_strncmp(cmds[0], "echo", 4) && ft_strlen(cmds[0]) == 4)
+		|| (!ft_strncmp(cmds[0], "export", 6) && ft_strlen(cmds[0]) == 6)
+		|| (!ft_strncmp(cmds[0], "unset", 5) && ft_strlen(cmds[0]) == 5)
+		|| (!ft_strncmp(cmds[0], "env", 3) && ft_strlen(cmds[0]) == 3)
+		|| (!ft_strncmp(cmds[0], "exit", 4) && ft_strlen(cmds[0]) == 4))
 	{
-		if ((!ft_strncmp(cmds[0], "cd", 2) && ft_strlen(cmds[0]) == 2)
-			|| (!ft_strncmp(cmds[0], "pwd", 3) && ft_strlen(cmds[0]) == 3)
-			|| (!ft_strncmp(cmds[0], "echo", 4) && ft_strlen(cmds[0]) == 4)
-			|| (!ft_strncmp(cmds[0], "export", 6) && ft_strlen(cmds[0]) == 6)
-			|| (!ft_strncmp(cmds[0], "unset", 5) && ft_strlen(cmds[0]) == 5)
-			|| (!ft_strncmp(cmds[0], "env", 3) && ft_strlen(cmds[0]) == 3)
-			|| (!ft_strncmp(cmds[0], "exit", 4) && ft_strlen(cmds[0]) == 4))
-		{
-			matrixfree(cmds);
-			return (0);
-		}
+		matrixfree(cmds);
+		return (0);
 	}
 	matrixfree(cmds);
 	return (1);
@@ -39,10 +35,10 @@ int	check_redirect(char *cmd)
 			while (cmd[i++] == '|')
 				count++;
 			if (count > 1)
-				break;
+				break ;
 		}
 	}
-	if (count == 0)
+	if (count == 0 && ft_strnstr(cmd, "|", ft_strlen(cmd)) != NULL)
 		return (0);
 	else if (count > 1)
 	{
@@ -55,7 +51,6 @@ int	check_redirect(char *cmd)
 void	sendto_builtin(char **cmds, t_dir_info *dir, char **envp)
 {
 	(void)envp;
-
 	if (!ft_strncmp(cmds[0], "pwd", 3) && ft_strlen(cmds[0]) == 3)
 		printf("%s\n", dir->dir);
 	if (!ft_strncmp(cmds[0], "env", 3) && ft_strlen(cmds[0]) == 3)
@@ -65,7 +60,7 @@ void	sendto_builtin(char **cmds, t_dir_info *dir, char **envp)
 		if (cmds[1] != NULL && cmds[2] != NULL)
 		{
 			printf("cd: too many arguments\n");
-			return (void)(0);
+			return ((void)0);
 		}
 		my_cd(cmds, envp, dir);
 	}

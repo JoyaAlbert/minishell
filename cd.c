@@ -1,15 +1,18 @@
 #include "minishell.h"
 
-void aux_mycd(char **cmds, t_dir_info *dir, t_dir_info *dir_info, int check)
+void	aux_mycd(char **cmds, t_dir_info *dir, t_dir_info *dir_info, int check)
 {
 	if (check < 0 && ft_strncmp(cmds[1], "-", 1) != 0)
+	{
 		printf("cd: %s: not a path or directory\n", cmds[1]);
+		return ;
+	}
 	dir = dir_info;
 	(void)dir;
 	free(dir_info);
 }
 
-int my_prevcd(char **cmds, char **envp, t_dir_info *dir)
+int	my_prevcd(char **cmds, char **envp, t_dir_info *dir)
 {
 	int			check;
 	char		*env;

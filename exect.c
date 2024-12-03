@@ -41,7 +41,7 @@ void	to_exec(char *cmd, char **envp)
 			path = getpath(cmds[0], envp);
 			execution(path, cmds, envp);
 			free(path);
-		}	
+		}
 		else
 			execution(path, cmds, envp);
 	}
@@ -49,4 +49,39 @@ void	to_exec(char *cmd, char **envp)
 		waitpid(pid, NULL, 0);
 	free(path);
 	matrixfree(cmds);
+}
+
+void	builtin_pipes(char *cmd, char **args, char **envp, t_dir_info *dir)
+{
+	if (check_builtins(cmd) == 0)
+	{
+		sendto_builtin(args, dir, envp);
+		matrixfree(args);
+		exit(0);
+	}
+}
+
+void	to_execpipe(char *cmd, char **envp, t_dir_info *dir)
+{
+	char	**args;
+	char	*path;
+
+	args = ft_split(cmd, ' ');
+	builtin_pipes(cmd, args, envp, dir);
+	if (cmd[0] != '/' && cmd[0] != '.')
+		path = getpath(args[0], envp);
+	else
+		path = ft_strndup(args[0], ft_strlen(args[0]) + 1);
+	if (path == NULL)
+	{
+		free(path);
+		matrixfree(args);
+		msg("No path found\n");
+	}
+	if (execve(path, args, envp) == -1)
+	{
+		free(path);
+		matrixfree(args);
+		msg("ERROR executing\n");
+	}
 }

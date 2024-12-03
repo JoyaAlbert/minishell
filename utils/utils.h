@@ -11,5 +11,7 @@ char			**ft_split(char *s, char c);
 char			*ft_strchr(char *s, int c);
 unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size);
 char			*ft_strndup(char *s1, int n);
+int				ft_atoi(char *str);
+char			*ft_itoa(int nb);
 
 #endif

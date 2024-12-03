@@ -14,9 +14,9 @@
 
 # define PROMPT  "\033[31mサ »\033[0m " //➤ 
 
-//on a typical Linux system, the PATH_MAX limit is usually set to 4096 characters
-//on windows 256
-
+/*on a typical Linux system, the PATH_MAX limit 
+is usually set to 4096 characters
+on windows 256*/
 typedef struct dir_info
 {
 	char	dir[4096];
@@ -32,11 +32,11 @@ typedef struct env
 void		my_cd(char **cmds, char **envp, t_dir_info *dir);
 
 // PIPES //
-void 		pipeline(char *cmd, char **envp, t_dir_info *dir); 
+void		pipeline(char *cmd, char **envp, t_dir_info *dir);
 
 // ERROR //
 void		msg(char *str);
-void	fork_fail(char **cmds, int pid);
+void		fork_fail(char **cmds, int pid);
 
 //	PARSER   //
 void		parser(t_dir_info *dir, char **envp, char *cmd);
@@ -50,6 +50,7 @@ void		matrixfree(char	**matrix);
 
 // EXECUTION //
 void		to_exec(char *cmd, char **envp);
+void		to_execpipe(char *cmd, char **envp, t_dir_info *dir);
 
 // PROMPT //
 int			prompt(t_envp *envp_d);
@@ -62,5 +63,6 @@ void		show_env(char **envp);
 t_dir_info	*my_pwd(char **envp);
 char		*lookinenv(char **envp, char *lookfor);
 void		update_env(char **envp, t_dir_info *dir);
+void		update_shlvl(char **envp);
 
 #endif

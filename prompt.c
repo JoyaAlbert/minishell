@@ -15,12 +15,12 @@ int	exit_built(char *cmd, t_dir_info *dir_info, t_envp *envp_d)
 	return (0);
 }
 
-int check_spaces(char *cmd)
+int	check_spaces(char *cmd)
 {
 	int	i;
 
 	i = 0;
-	while(cmd[i] == ' ' || cmd[i] == '\t')
+	while (cmd[i] == ' ' || cmd[i] == '\t')
 		i++;
 	if (cmd[i] == '\0')
 		return (1);
