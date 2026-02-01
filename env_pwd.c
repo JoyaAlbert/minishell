@@ -1,12 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_pwd.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copito <copito@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 20:11:31 by copito            #+#    #+#             */
+/*   Updated: 2025/07/25 18:01:01 by copito           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	show_env(char **envp)
+t_dir_info	*my_pwd(char **envp)
+{
+	char		cwd[4026];
+	t_dir_info	*aux;
+
+	(void)envp;
+	aux = malloc(sizeof(t_dir_info));
+	if (aux == NULL)
+	{
+		msg("Error allocating memory");
+		return (NULL);
+	}
+	aux->prev_dir = getenv("OLDPWD");
+	getcwd(aux->dir, sizeof(cwd));
+	return (aux);
+}
+
+int	show_env(char **envp)
 {
 	int	i;
 
 	i = -1;
+	if (envp == NULL)
+		return (0);
 	while (envp[++i] != NULL)
 		printf("%s\n", envp[i]);
+	return (1);
 }
 
 void	update_env(char **envp, t_dir_info *dir)
@@ -38,9 +70,31 @@ void	update_env(char **envp, t_dir_info *dir)
 	}
 }
 
+char	*lookinenv(char **envp, char *lookfor)
+{
+	int	i;
+
+	i = 0;
+	if (envp == NULL || lookfor == NULL)
+		return (NULL);
+	while (envp[i] != NULL)
+	{
+		if (ft_strnstr(envp[i], lookfor, ft_strlen(lookfor)) != NULL)
+		{
+			if (ft_strnstr(lookfor, "PATH=/", 6) != NULL)
+				return (ft_strnstr(envp[i], lookfor, ft_strlen(lookfor)));
+			else
+				return (ft_strnstr(envp[i], lookfor, ft_strlen(lookfor))
+					+ ft_strlen(lookfor));
+		}
+		i++;
+	}
+	return (NULL);
+}
+
 void	update_shlvl(char **envp)
 {
-	int i;
+	int		i;
 	char	*aux;
 	char	*num;
 
@@ -55,33 +109,4 @@ void	update_shlvl(char **envp)
 	envp[i] = ft_strndup(aux, (ft_strlen(aux)) + 1);
 	free(aux);
 	free(num);
-}
-
-char	*lookinenv(char **envp, char *lookfor)
-{
-	int	i;
-
-	i = 0;
-	while (envp[i] != 0)
-	{
-		if (ft_strnstr(envp[i], lookfor, ft_strlen(lookfor)) != NULL)
-			return (ft_strnstr(envp[i], lookfor, ft_strlen(lookfor))
-				+ ft_strlen(lookfor));
-		i++;
-	}
-	return (NULL);
-}
-
-t_dir_info	*my_pwd(char **envp)
-{
-	char		cwd[4026];
-	t_dir_info	*aux;
-
-	(void)envp;
-	aux = malloc(sizeof(t_dir_info));
-	if (aux == NULL)
-		return (NULL);
-	aux->prev_dir = getenv("OLDPWD");
-	getcwd(aux->dir, sizeof(cwd));
-	return (aux);
 }

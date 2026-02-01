@@ -1,112 +1,71 @@
-#include "utils.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lib_ft1.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copito <copito@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 20:11:13 by copito            #+#    #+#             */
+/*   Updated: 2025/07/31 11:01:36 by copito           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size)
+#include "../minishell.h"
+
+int	ft_strncmp(char *s1, char *s2, unsigned int n)
 {
 	unsigned int	i;
 
 	i = 0;
-	if (size == 0)
-		return (ft_strlen(src));
-	while (src[i] != '\0' && i < (size - 1))
-	{
-		dest[i] = src[i];
+	if (ft_strlen(s1) == 0 && ft_strlen(s2) == 0)
+		return (0);
+	if (n < 1)
+		return (0);
+	n--;
+	while ((i < n) && (s1[i] == s2[i]) && s1[i] != '\0' && s2[i] != '\0')
 		i++;
-	}
-	dest[i] = '\0';
-	return (ft_strlen(src));
+	return (((unsigned char)s1[i] - (unsigned char)s2[i]));
 }
 
-static int	check(int nb)
+int	ft_isalpha(int argument)
 {
-	int	i;
-
-	i = 1;
-	if (nb == -2147483648)
-		return (12);
-	if (nb < 0)
-		i++;
-	while (nb / 10 != 0)
-	{
-		nb = nb / 10;
-		i++;
-	}
-	return (i + 1);
-}
-
-static char	*exceptions(int nb, int i, char *a)
-{
-	if (nb == 0)
-	{
-		ft_strlcpy(a, "0", i);
-		return (a);
-	}
-	else if (nb == -2147483648)
-	{
-		ft_strlcpy(a, "-2147483648", i);
-		return (a);
-	}
-	return (NULL);
-}
-
-char	*ft_itoa(int nb)
-{
-	char	*a;
-	int		i;
-
-	i = check(nb);
-	a = (char *)malloc(i * sizeof(char));
-	if (a == NULL)
-		return (NULL);
-	if (nb == 0 || nb == -2147483648)
-		return (exceptions(nb, i, a));
-	if (nb < 0 && nb != -2147483648)
-	{
-		a[0] = '-';
-		nb = nb * (-1);
-	}
-	a[i - 1] = '\0';
-	i--;
-	while (nb != 0 && nb != -2147483648 && i != 0)
-	{
-		a[i - 1] = (nb % 10) + '0';
-		nb = nb / 10;
-		i--;
-	}
-	return (a);
-}
-
-static int	ft_isspace(int c)
-{
-	if (c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == '\v'
-		|| c == ' ')
+	if ((argument > 64 && argument < 91) || (argument > 96 && argument < 123))
 		return (1);
 	return (0);
 }
 
-int	ft_atoi(char *str)
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	else
+		return (0);
+}
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
 	int	i;
-	int	n;
-	int	sign;
+	int	j;
 
-	i = 0;
-	n = 0;
-	sign = 1;
-	while (ft_isspace(str[i]) == 1)
-		i++;
-	if (str[i] == '-')
+	j = 0;
+	i = (int)n - 1;
+	if (!dest && !src)
+		return (NULL);
+	if (dest > src)
 	{
-		i++;
-		sign = -1;
+		while (i >= 0)
+		{
+			*(char *)(dest + i) = *(char *)(src + i);
+			i--;
+		}
 	}
-	else if (str[i] == '+')
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-		return (0);
-	while (str[i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
+	else
 	{
-		n = n * 10 + (str[i] - '0');
-		i++;
+		while (i >= 0)
+		{
+			*(char *)(dest + j) = *(char *)(src + j);
+			i--;
+			j++;
+		}
 	}
-	return (sign * n);
+	return (dest);
 }

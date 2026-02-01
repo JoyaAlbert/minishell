@@ -1,12 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copito <copito@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 20:11:01 by copito            #+#    #+#             */
+/*   Updated: 2025/07/09 20:11:03 by copito           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 char	*ft_strndup(char *s1, int n)
 {
 	char	*s2;
 
+	if (s1 == NULL)
+		return (NULL);
 	while (*s1 == ' ')
 		s1++;
-	s2 = (char *)malloc(sizeof(char) * n);
+	//s2 = (char *)malloc(sizeof(char) * n);
+	s2 = malloc(n);
 	if (s2 == NULL)
 		return (NULL);
 	ft_strlcpy(s2, (char *)s1, n);

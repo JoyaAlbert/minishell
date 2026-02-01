@@ -1,4 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exect.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copito <copito@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 20:11:42 by copito            #+#    #+#             */
+/*   Updated: 2025/07/25 17:56:17 by copito           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+void	builtin_exec(char *cmd, char **args, t_exec_ctx *ctx)
+{
+	if (check_builtins(cmd) == 0)
+	{
+		sendto_builtin(args, ctx->dir, ctx->envp, ctx->envp_d);
+		matrixfree(args);
+		exit(0);
+	}
+}
 
 void	execution(char *path, char **cmds, char **envp)
 {
@@ -6,82 +28,47 @@ void	execution(char *path, char **cmds, char **envp)
 
 	if (path == NULL)
 	{
-		free(path);
-		matrixfree(cmds);
-		msg("ERROR: no path found");
+		free_arraymatrix(path, cmds);
+		printf("Command not found\n");
+		exit(127);
 	}
 	check = execve(path, cmds, envp);
 	if (check == -1)
 	{
-		free(path);
-		matrixfree(cmds);
-		msg("ERROR while executing");
+		free_arraymatrix(path, cmds);
+		printf("ERROR while executing\n");
+		exit(127);
 	}
 }
 
+//path contiene el primer cmd pero en parse_path nada más entrar 
+//se libera, para que está path entonces?
 void	to_exec(char *cmd, char **envp)
 {
 	char	*path;
 	char	**cmds;
 	pid_t	pid;
+	int		status;
 
 	cmds = ft_split(cmd, ' ');
 	pid = fork();
 	path = ft_strndup(cmds[0], ft_strlen(cmds[0]) + 1);
-	if (pid == -1)
+	fork_fail(cmds, pid);
+	if (pid == 0)
+		parse_path(path, cmds, envp);
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			set_exit_status(WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			set_exit_status(128 + WTERMSIG(status));
+	}
+	free_arraymatrix(path, cmds);
+}
+	/*if (pid == -1)
 	{
 		matrixfree(cmds);
 		msg("fork failed");
-	}
-	if (pid == 0)
-	{
-		if (cmds[0][0] != '/' && cmds[0][0] != '.')
-		{
-			free(path);
-			path = getpath(cmds[0], envp);
-			execution(path, cmds, envp);
-			free(path);
-		}
-		else
-			execution(path, cmds, envp);
-	}
-	else
-		waitpid(pid, NULL, 0);
-	free(path);
-	matrixfree(cmds);
-}
-
-void	builtin_pipes(char *cmd, char **args, char **envp, t_dir_info *dir)
-{
-	if (check_builtins(cmd) == 0)
-	{
-		sendto_builtin(args, dir, envp);
-		matrixfree(args);
-		exit(0);
-	}
-}
-
-void	to_execpipe(char *cmd, char **envp, t_dir_info *dir)
-{
-	char	**args;
-	char	*path;
-
-	args = ft_split(cmd, ' ');
-	builtin_pipes(cmd, args, envp, dir);
-	if (cmd[0] != '/' && cmd[0] != '.')
-		path = getpath(args[0], envp);
-	else
-		path = ft_strndup(args[0], ft_strlen(args[0]) + 1);
-	if (path == NULL)
-	{
-		free(path);
-		matrixfree(args);
-		msg("No path found\n");
-	}
-	if (execve(path, args, envp) == -1)
-	{
-		free(path);
-		matrixfree(args);
-		msg("ERROR executing\n");
-	}
-}
+	}*/
+//entre fok fail  condicionales, ya no necesario 

@@ -1,86 +1,55 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: copito <copito@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/09 20:12:35 by copito            #+#    #+#             */
+/*   Updated: 2025/07/23 22:18:02 by copito           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+#include "utils/utils.h"
 
-int	check_builtins(char *cmd)
+char	**validate_and_prepare_cmd(char *cmd, char **envp)
 {
 	char	**cmds;
+	int		path_exists;
 
-	cmds = ft_split(cmd, ' ');
-
-	if ((!ft_strncmp(cmds[0], "cd", 2) && ft_strlen(cmds[0]) == 2)
-		|| (!ft_strncmp(cmds[0], "pwd", 3) && ft_strlen(cmds[0]) == 3)
-		|| (!ft_strncmp(cmds[0], "echo", 4) && ft_strlen(cmds[0]) == 4)
-		|| (!ft_strncmp(cmds[0], "export", 6) && ft_strlen(cmds[0]) == 6)
-		|| (!ft_strncmp(cmds[0], "unset", 5) && ft_strlen(cmds[0]) == 5)
-		|| (!ft_strncmp(cmds[0], "env", 3) && ft_strlen(cmds[0]) == 3)
-		|| (!ft_strncmp(cmds[0], "exit", 4) && ft_strlen(cmds[0]) == 4))
+	if (check_pipe(cmd) == -1 || parse_redirections(cmd) == -1)
 	{
+		printf("No accepted ||, >>>, <<< or no args after |\n");
+		return (NULL);
+	}
+	cmds = split_outside_quotes(cmd, ' ');
+	path_exists = (lookinenv(envp, "PATH=/") != NULL);
+	if (!path_exists && check_builtins(cmd) != 0 && cmds[0][0] != '/')
+	{
+		printf("Error: No PATH variable.");
+		printf(" Only builtins or absolute paths allowed.\n");
 		matrixfree(cmds);
-		return (0);
+		return (NULL);
 	}
-	matrixfree(cmds);
-	return (1);
+	return (cmds);
 }
 
-int	check_redirect(char *cmd)
-{
-	int	i;
-	int	count;
-
-	i = -1;
-	while (cmd[++i] != '\0')
-	{
-		count = 0;
-		if (cmd[i] == '|' || cmd[i] == '<' || cmd[i] == '>')
-		{
-			while (cmd[i++] == '|')
-				count++;
-			if (count > 1)
-				break ;
-		}
-	}
-	if (count == 0 && ft_strnstr(cmd, "|", ft_strlen(cmd)) != NULL)
-		return (0);
-	else if (count > 1)
-	{
-		printf("|| not allowed\n");
-		return (-1);
-	}
-	return (1);
-}
-
-void	sendto_builtin(char **cmds, t_dir_info *dir, char **envp)
-{
-	(void)envp;
-	if (!ft_strncmp(cmds[0], "pwd", 3) && ft_strlen(cmds[0]) == 3)
-		printf("%s\n", dir->dir);
-	if (!ft_strncmp(cmds[0], "env", 3) && ft_strlen(cmds[0]) == 3)
-		show_env(envp);
-	if (!ft_strncmp(cmds[0], "cd", 2) && ft_strlen(cmds[0]) == 2)
-	{
-		if (cmds[1] != NULL && cmds[2] != NULL)
-		{
-			printf("cd: too many arguments\n");
-			return ((void)0);
-		}
-		my_cd(cmds, envp, dir);
-	}
-	if (!ft_strncmp(cmds[0], "unset", 5) && ft_strlen(cmds[0]) == 5)
-	{}
-}
-
-void	parser(t_dir_info *dir, char **envp, char *cmd)
+void	parser(t_dir_info *dir, char **envp, char *cmd, t_envp *envp_d)
 {
 	char	**cmds;
 
-	///SI CAMBIAMOS A USAR TODAS LAS VRIABLES CON UN DUP CAMBIAR BUILT INS QUE USEN ENV CON DIR_>ENV
-	if (check_redirect(cmd) == -1)
+	cmds = validate_and_prepare_cmd(cmd, envp);
+	if (!cmds)
 		return ;
-	if (check_builtins(cmd) == 1 && check_redirect(cmd) == 1)
+	if (check_builtins(cmd) == 1 && check_pipe(cmd) == 1
+		&& parse_redirections(cmd) != 0 && !is_variable_assignment(cmd))
 		to_exec(cmd, envp);
-	cmds = ft_split(cmd, ' ');
-	if (check_redirect(cmd) == 0)
-		pipeline(cmd, envp, dir);
-	else if (check_builtins(cmd) == 0 && check_redirect(cmd) == 1)
-		sendto_builtin(cmds, dir, envp);
+	if (check_pipe(cmd) == 0)
+		pipeline(cmd, envp, dir, envp_d);
+	else if (parse_redirections(cmd) == 0)
+		execute_with_redirections(cmd, envp, dir, envp_d);
+	else if (check_builtins(cmd) == 0 && check_pipe(cmd) == 1)
+		sendto_builtin(cmds, dir, envp, envp_d);
 	matrixfree(cmds);
 }

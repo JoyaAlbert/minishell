@@ -5,12 +5,31 @@ SRC             =   minishell.c \
 					prompt.c\
 					exect.c\
 					parser.c\
-					signal_handler.c\
-					cd.c\
+					parser_aux.c\
+					cd_echo.c\
 					env_pwd.c\
 					pipelinig.c\
+					utils/lib_ft.c utils/lib_ft1.c utils/ft_split.c utils/ft_atoi.c utils/ft_itoa.c\
+					utils/split_outside_quotes.c\
+					matrix.c\
+					quotes.c\
+					quotes_expansion.c\
+					quotes_processing.c\
+					redirections.c\
+					redirections_aux.c\
+					redirections_parsing.c\
+					heredoc.c\
+					pipe_aux.c\
+					pipe_child.c\
+					variables.c\
+					variables_aux.c\
+					export.c\
+					export_aux.c\
 					unset.c\
-					utils/lib_ft.c utils/lib_ft1.c utils/ft_split.c
+					export_utils.c\
+					exit_status.c\
+					signals.c\
+					cd_echo_aux.c\
 
 CC          =   gcc
 CFLAGS          =   -Wall -Wextra -Werror -g3 -g -fsanitize=address -lreadline -lhistory
