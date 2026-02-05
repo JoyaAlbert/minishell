@@ -32,7 +32,7 @@ SRC             =   minishell.c \
 					cd_echo_aux.c\
 
 CC          =   gcc
-CFLAGS          =   -Wall -Wextra -Werror -g3 -g -fsanitize=address -lreadline -lhistory
+CFLAGS          =   -Wall -Wextra -Werror -g3 -g -lreadline -lhistory
 
 RM              =   rm -f
 CLR_RMV     := \033[0m
@@ -48,21 +48,21 @@ all: $(NAME) pato
 
 $(NAME): $(OBJS)
 		@clear
-		@echo "$(GREEN)Compilation ${CLR_RMV}of ${YELLOW}$(NAME) ${CYAN}"
-		$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+		@echo -e "$(GREEN)Compilation ${CLR_RMV}of ${YELLOW}$(NAME) ${CYAN}"
+		$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
 clean:			pato 
-				@echo "$(RED)Deleting ${YELLOW}.o ${CLR_RMV}"
+				@echo -e "$(RED)Deleting ${YELLOW}.o ${CLR_RMV}"
 				$(RM) $(OBJS)
 
 pato:			
 				@clear 
-				@echo "$(RED)███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     "
-				@echo "████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     "
-				@echo "██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     "
-				@echo "██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     "
-				@echo "██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗"
-				@echo "╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝"
+				@echo -e "$(RED)███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     "
+				@echo -e "████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     "
+				@echo -e "██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     "
+				@echo -e "██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     "
+				@echo -e "██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗"
+				@echo -e "╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝"
 
 
 fclean:         clean

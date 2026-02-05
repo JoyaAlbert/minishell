@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: copito <copito@student.42.fr>              +#+  +:+       +#+        */
+/*   By: albertojoya <albertojoya@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 20:12:29 by copito            #+#    #+#             */
-/*   Updated: 2025/07/31 14:05:33 by copito           ###   ########.fr       */
+/*   Updated: 2026/02/05 14:14:17 by albertojoya      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h> 
 # include <unistd.h>
 # include <stddef.h>
 # include <stdlib.h>
